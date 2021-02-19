@@ -1,0 +1,35 @@
+{% extends "timesheets/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="content-section">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                {% if object %}
+                    <legend class="border-bottom mb-4">Update Clock Punch</legend>
+                    <h2 class="article-title">Pay Period: {{ object.timesheet.pay_period_start }}-{{ object.timesheet.pay_period_end }}</h2>
+                    <h2 class="article-title">Date: {{ object.day }}</h2>
+                    {% if object.clock == True %}
+                        <h2 class="article-title">Clock In</h2>
+                    {% else %}
+                        <h2 class="article-title">Clock Out</h2>
+                    {% endif %}
+                {% else %}
+                    <legend class="border-bottom mb-4">New Clock Punch</legend>
+                    <h2 class="article-title">Pay Period: {{ timesheet.pay_period_start }}-{{ timesheet.pay_period_end }}</h2>
+                    <h2 class="article-title">Date: {{ day }}</h2>
+                {% endif %}
+                {{ form|crispy }}
+            </fieldset>
+            <div class="form-group">
+            {% if object %}
+                <button class="btn btn-outline-info" type="submit">Update Clock Punch</button>
+                <a class="btn btn-outline-secondary" href="{% url 'timesheets:timesheet-detail' object.timesheet.id %}">Cancel</a>
+            {% else %}
+                <button class="btn btn-outline-info" type="submit">Create Clock Punch</button>
+                <a class="btn btn-outline-secondary" href="{% url 'timesheets:timesheet-detail' timesheet.id %}">Cancel</a>
+            {% endif %}
+            </div>
+        </form>
+    </div>
+{% endblock content %}

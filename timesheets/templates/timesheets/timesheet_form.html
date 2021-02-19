@@ -1,0 +1,20 @@
+{% extends "timesheets/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="content-section">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Timesheet</legend>
+                {{ form|crispy }}
+            </fieldset>
+            <div class="form-group">
+            {% if object %}
+                <button class="btn btn-outline-info" type="submit">Update Timesheet</button>
+            {% else %}
+                <button class="btn btn-outline-info" type="submit">Create Timesheet</button>
+            {% endif %}
+            </div>
+        </form>
+    </div>
+{% endblock content %}

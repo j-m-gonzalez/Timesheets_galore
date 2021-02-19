@@ -1,0 +1,61 @@
+{% extends "timesheets/base.html" %}
+{% block title %}Home!{% endblock title %}
+{% block content %}
+    {% if no_timesheet %}
+      <h1>Welcome {{ request.user.first_name }}</h1>
+        <p>Check out the <a href='{% url 'timesheets:timesheets-about' %}'>About</a> page or...</p>
+    {% else %}
+      <h1>Hello {{ request.user.first_name }}</h1>
+    {% endif %}
+        <form method='POST' action='{% url 'timesheets:timesheet-clock' %}' name='timesheets:timesheet-clock'>{% csrf_token %}
+        {% if no_timesheet %}
+        {% elif timesheet_old %}
+            <a href="{% url 'timesheets:timesheet-create' %}">Create New Timesheet</a>
+        {% else %}
+          {% if last_clock %}
+              <button class="btn btn-danger" type="submit">Clock Out</button>
+          {% else %}
+              <button class="btn btn-success" type="submit">Clock In</button>
+          {% endif %}
+        {% endif %}
+        </form>
+    {% if no_timesheet %}
+      <h2><a href="{% url 'timesheets:timesheet-create' %}">Create New Timesheet</a></h2>
+    {% else %}
+      <h2>Here are your timesheets</h2>
+    {% endif %}
+    {% for timesheet in page_obj %}
+        <article class="media content-section">
+          <img class="rounded-circle article-img" src="{{ timesheet.user.profile.image.url }}">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="{% url 'profile' %}">User: {{ timesheet.user.first_name }} {{ timesheet.user.last_name }}</a>
+              <small class="text-muted">Position: {{ timesheet.user.profile.position }}</small>
+            </div>
+            <h2><a class="article-title" href="{% url 'timesheets:timesheet-detail' timesheet.id %}">{{ timesheet.pay_period_start }}-{{ timesheet.pay_period_end }}</a></h2>
+            <h4>Total Hours: {{ timesheet.total_hours }}
+          </div>
+        </article>
+    {% endfor %}
+    {% if is_paginated %}
+
+      {% if page_obj.has_previous %}
+        <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+      {% endif %}
+
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+          <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+          <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+
+      {% if page_obj.has_next %}
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+      {% endif %}
+
+    {% endif %}
+{% endblock content %}

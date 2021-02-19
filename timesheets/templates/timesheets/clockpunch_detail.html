@@ -1,0 +1,33 @@
+{% extends "timesheets/base.html" %}
+{% block title %}Timesheet{% endblock title %}
+{% block content %}
+    <h1>Hello {{ request.user.first_name }}</h1>
+    <h2>Clock Punch Detail</h2>
+        <article class="media content-section">
+          <img class="rounded-circle article-img" src="{{ object.timesheet.user.profile.image.url }}">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="{% url 'profile' %}">User: {{ object.timesheet.user.first_name }} {{ object.timesheet.user.last_name }}</a>
+              <small class="text-muted">Position: {{ object.timesheet.user.profile.position }}</small>
+            </div>
+            <h2 class="article-title">Pay Period: {{ object.timesheet.pay_period_start }}-{{ object.timesheet.pay_period_end }}</h2>
+            <h2 class="article-title">Date: {{ object.day }}</h2>
+            {% if object.clock == True %}
+                <h2 class="article-title">Clock In</h2>
+            {% else %}
+                <h2 class="article-title">Clock Out</h2>
+            {% endif %}
+            <form method='POST' action='{% url 'timesheets:clockpunch-detail-change_clock' object.id %}' name='timesheets:clockpunch-detail-change_clock'>{% csrf_token %}
+                <button type="submit">Change Clock</button>
+            </form>
+            <h2 class="article-title">Time: {{ object.time }}</h2>
+            {% if object.timesheet.user == user %}
+              <div>
+                  <a class="btn btn-secondary btn-sm mt-1 mb-1" href="/timesheets/{{ object.timesheet.id }}/{{ object.id }}/update">Update</a>
+                  <a class="btn btn-danger btn-sm mt-1 mb-1" href="/timesheets/{{ object.timesheet.id }}/{{ object.id }}/delete">Delete</a>
+              </div>
+              <a class="mr-2" href="{% url 'timesheets:timesheet-detail' object.timesheet.id %}">Back to timesheet</a>
+            {% endif %}
+          </div>
+        </article>
+{% endblock content %}
