@@ -15,3 +15,5 @@ from django.test import TestCase
 # Assert that time and datetime.time are equal for clock punches
 
 # Make sure there's no gaps in pay periods. Could fuck with weekly overtime hrs
+
+# Make sure css is loading
