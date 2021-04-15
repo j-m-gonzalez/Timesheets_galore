@@ -131,11 +131,6 @@ class TimesheetDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     # def get_queryset(self):
     #     return (Timesheet.objects.filter(user=self.request.user).
     #                               order_by('-pay_period_start'))
-    logger.debug('hello')
-    logger.debug(os.environ.get("EMAIL_USER"))
-    logger.debug(os.environ.get("SERVER_PASS"))
-    logger.debug(config("SERVER_PASS"))
-    logger.debug(os.environ)
     def test_func(self):
         timesheet = self.get_object()
         if self.request.user == timesheet.user:
