@@ -374,6 +374,7 @@ class ClockPunchDeleteView(
         return False
 
     def delete(self, request, *args, **kwargs):
+        '''Trying to get the obj to display in the success message'''
         obj = self.get_object()
         messages.success(self.request, self.success_message % obj.__dict__)
         logger.debug(obj)
