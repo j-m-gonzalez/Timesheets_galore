@@ -30,7 +30,7 @@ SECRET_KEY = config['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['stage.timesheet.page', 'timesheet.page', '161.35.229.31']
+ALLOWED_HOSTS = ['stage.timesheet.page', 'timesheet.page', '161.35.229.31', '127.0.0.1']
 
 
 # Application definition
