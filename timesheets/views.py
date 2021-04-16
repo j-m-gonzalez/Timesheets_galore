@@ -149,10 +149,6 @@ class TimesheetDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         context = super().get_context_data(**kwargs)
 
         # Add in a QuerySet
-        logger.debug('context')
-        logger.debug(os.environ.get("EMAIL_USER"))
-        logger.debug(os.environ.get("SERVER_PASS"))
-        logger.debug(config("SERVER_PASS"))
         day_set = self.object.day_set.all().order_by('day')
         context['punch_list'] = []  #List of list. Index = the clock punch of the day
                                     # Iterates through each day for that punch position (ex. 1(first punch): mon time, tues time etc.)
