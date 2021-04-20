@@ -30,6 +30,13 @@ from decouple import config
 import logging
 logger = logging.getLogger(__name__)
 
+def home(request):
+    if request.user.is_authenticated:
+        return redirect('timesheets:timesheets-home')
+    else:
+        return redirect('login')
+
+
 def clock(request, **kwargs):
     """Clock button which creates ClockPunch object."""
     current_timesheet = Timesheet.objects.filter(user=request.user,
